@@ -1,0 +1,31 @@
+from pydantic_settings import BaseSettings
+
+
+class Settings(BaseSettings):
+    """Worker configuration settings."""
+
+    # Database
+    DATABASE_URL: str = "postgresql://expenseops_user:expenseops_password@postgres:5432/expenseops"
+
+    # Redis / Celery
+    CELERY_BROKER_URL: str = "redis://redis:6379/0"
+    CELERY_RESULT_BACKEND: str = "redis://redis:6379/0"
+    CELERY_MAX_RETRIES: int = 3
+    CELERY_RETRY_BACKOFF_BASE: int = 60  # seconds
+
+    # MinIO / S3
+    MINIO_ENDPOINT: str = "http://minio:9000"
+    S3_ACCESS_KEY: str = "minioadmin"
+    S3_SECRET_KEY: str = "minioadmin123"
+    S3_BUCKET_RECEIPTS_RAW: str = "receipts-raw"
+    S3_SECURE: bool = False
+
+    # Logging
+    LOG_LEVEL: str = "INFO"
+
+    class Config:
+        env_file = ".env"
+        case_sensitive = True
+
+
+settings = Settings()
